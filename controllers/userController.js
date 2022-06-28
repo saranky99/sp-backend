@@ -13,11 +13,17 @@ const userCntrl = {
       const { role, username, email, mobile, password, confirmpassword } =
         req.body;
 
-
       if (
-        !role ||  !username || !email || !mobile ||  !password || !confirmpassword
+        !role ||
+        !username ||
+        !email ||
+        !mobile ||
+        !password ||
+        !confirmpassword
       ) {
-        return res.status(400).json({ error: "**please fill all the fields**" });
+        return res
+          .status(400)
+          .json({ error: "**please fill all the fields**" });
       }
 
       if (!validateEmail(email)) {
@@ -30,15 +36,15 @@ const userCntrl = {
         return res.status(400).json({ error: "**user already have exits**" });
       }
 
-      if (password.length < 6) {
+      if (password.length < 8) {
         return res
           .status(400)
-          .json({ error: "**password  must be least 06 character**" });
+          .json({ error: "**password  must be least 08 character**" });
       }
 
-        if (password !== confirmpassword) {
-          return res.status(400).json({ error: "**passsword do not match**" });
-        }
+      if (password !== confirmpassword) {
+        return res.status(400).json({ error: "**passsword do not match**" });
+      }
 
       const passwordHash = await bcrypt.hash(password, 12);
 
@@ -58,46 +64,36 @@ const userCntrl = {
 
       console.log(saveUser);
 
-      
-
       res.status(200).json({ msg: "Register succusfully" });
     } catch (error) {
       console.log(error);
       return res.status(500).json({ error });
-      
     }
   },
 
-  checkauthentication : (req, res , next) => {
+  checkauthentication: (req, res, next) => {
     res.json({ msg: "auth is working " });
   },
 
-
-  checkuser: (req, res , next) => {
+  checkuser: (req, res, next) => {
     res.json({ msg: "you are logged in do what you want  " });
   },
 
-  checkAdmin: (req, res , next) => {
+  checkAdmin: (req, res, next) => {
     res.json({ msg: "Hello Admin! your are logged in do what you want  " });
   },
 
-
-  checkStudent: (req, res , next) => {
+  checkStudent: (req, res, next) => {
     res.json({ msg: "Hello Student! your are logged in do what you want  " });
   },
 
-
-  checkCompany: (req, res , next) => {
+  checkCompany: (req, res, next) => {
     res.json({ msg: "Hello Company! your are logged in do what you want  " });
   },
 
-  checkMentor: (req, res , next) => {
+  checkMentor: (req, res, next) => {
     res.json({ msg: "Hello Mentor! your are logged in do what you want  " });
   },
-
-
-
-
 
   userlogin: async (req, res) => {
     try {
@@ -122,12 +118,14 @@ const userCntrl = {
           .json({ error: "** Invalid email or password**" });
       }
 
-      const token = jwt.sign({ _id: user._id , role:user.role }, process.env.JWT_SECRET_KEY);
+      const token = jwt.sign(
+        { _id: user._id, role: user.role },
+        process.env.JWT_SECRET_KEY
+      );
 
-     return res.json({ token,  user });
+      return res.json({ token, user });
 
-       return res.json({ message: "Login success!" });
-      
+      return res.json({ message: "Login success!" });
     } catch (error) {
       return res.status(500).json(error);
     }

@@ -6,9 +6,30 @@ const eventCntrl = {
   postevent: async (req, res) => {
     try {
       
-      const {title,time,category,pic,duedate,price,breifDescription,fullDescription} = req.body;
-      if(!title || !time || !category || !duedate || !price || !breifDescription || !fullDescription||  !pic){
-        return res.status(200).json({ error: "fill all fields" });
+      const {
+        title,
+        time,
+        category,
+        pic,
+        duedate,
+        price,
+        breifDescription,
+        fullDescription,
+        currentBooking,
+        finaldate,
+      } = req.body;
+      if (
+        !title ||
+        !time ||
+        !category ||
+        !duedate ||
+        !price ||
+        !breifDescription ||
+        !fullDescription ||
+        !pic ||
+        !finaldate
+      ) {
+        return res.status(400).json({ error: "fill all fields" });
       }
       const event = new Event({
         title,
@@ -16,20 +37,25 @@ const eventCntrl = {
         category,
         price,
         duedate,
+        finaldate,
         breifDescription,
         fullDescription,
-        photo:pic
-
-      })
+        currentBooking,
+        photo: pic,
+      });
       await event.save();
       console.log(req.body.pic);
-      console.log( title,
+      console.log(
+        title,
         time,
         category,
         price,
         duedate,
+        finaldate,
+        currentBooking,
         breifDescription,
-        fullDescription,);
+        fullDescription
+      );
      return  res.status(200).json({ msg: "Event Posted Successfully" });
     } catch (error) {
       console.log(error);
@@ -47,9 +73,6 @@ const eventCntrl = {
       res.status(400).json({ error: error });
     }
   },
-
-
-
 
 singleEvent : async(req,res)=>{
   try {

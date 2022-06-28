@@ -1,17 +1,22 @@
 const mongoose = require("mongoose");
-const{ObjectId} = mongoose.Schema.Types
-const eventschema = new mongoose.Schema(
+const { ObjectId } = mongoose.Schema.Types;
+const eventbookingschema = new mongoose.Schema(
   {
     title: {
       type: String,
       required: true,
     },
 
-    category: {
+    eventid: {
       type: String,
       required: true,
     },
-    time: {
+
+    userid: {
+      type: String,
+      required: true,
+    },
+    category: {
       type: String,
       required: true,
     },
@@ -33,21 +38,20 @@ const eventschema = new mongoose.Schema(
       required: true,
     },
 
-    fullDescription: {
-      type: String,
-      required: true,
-    },
-
     photo: {
       type: String,
       required: true,
     },
 
-    currentBooking: [],
-    type: { type: String },
-    postedBy: {
-      type: ObjectId,
-      ref: "User",
+    status: {
+      type: String,
+      required: true,
+      default: "booked",
+    },
+
+    paymentId: {
+      type: String,
+      required: true,
     },
   },
 
@@ -56,5 +60,8 @@ const eventschema = new mongoose.Schema(
   }
 );
 
-const eventModel = new mongoose.model("Event", eventschema);
-module.exports = eventModel;
+const eventbookingModel = new mongoose.model(
+  "EventBooking",
+  eventbookingschema
+);
+module.exports = eventbookingModel;
